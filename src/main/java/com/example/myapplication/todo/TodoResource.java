@@ -26,44 +26,51 @@ public class TodoResource {
 	@Autowired
 	private TodoHardcodedService todoHardcodedService;
 	
+	@Autowired
+	private TodoRepository todoRepository;
 	
 	
-	@GetMapping("/user/{username}/todos")
+	@GetMapping("jpa/user/{username}/todos")
 	public List<Todo> getAllTodos(@PathVariable String username)
 	{
-		return todoHardcodedService.findAll();
+		//return todoHardcodedService.findAll();
+		return this.todoRepository.findAll();
 	}
 
-	@GetMapping("/user/{username}/todos/{id}")
+	@GetMapping("jpa/user/{username}/todos/{id}")
 	public Todo getTodo(@PathVariable String username, @PathVariable int id)
 	{
-		return todoHardcodedService.fingById(id);
+//		return todoHardcodedService.fingById(id);
+		return this.todoRepository.findById(id).get();
 	}
 	
-	@DeleteMapping("/user/{username}/todos/{id}")
+	@DeleteMapping("jpa/user/{username}/todos/{id}")
 	public ResponseEntity<Void> deleteTodo(@PathVariable String username,@PathVariable int id)
 	{
-		Todo todo=todoHardcodedService.deleteById(id);
-		if(todo!=null)
-		{
+		//Todo todo=todoHardcodedService.deleteById(id);
+		todoRepository.deleteById(id);
+//		if(todo!=null)
+//		{
 			return ResponseEntity.noContent().build();
-		}
-		return ResponseEntity.notFound().build();
+//		}
+//		return ResponseEntity.notFound().build();
 	}
 
 	
-	@PutMapping("/user/{username}/todos/{id}")
+	@PutMapping("jpa/user/{username}/todos/{id}")
 	public ResponseEntity<Todo> updateTodo(@PathVariable String username, @PathVariable int id, @RequestBody Todo todo)
 	{
-		Todo updatedTodo=todoHardcodedService.update(todo);
+//		Todo updatedTodo=todoHardcodedService.update(todo);
+		Todo updatedTodo=todoRepository.save(todo);
 		return new ResponseEntity<Todo>(todo,HttpStatus.OK);
 	}
 	
-	@PostMapping("/user/{username}/todos")
+	@PostMapping("jpa/user/{username}/todos")
 	public ResponseEntity<Void> saveTodo(@PathVariable String username, @RequestBody Todo todo)
 	{
 		
-		Todo addTodo=todoHardcodedService.update(todo);
+//		Todo addTodo=todoHardcodedService.update(todo);
+		Todo addTodo=todoRepository.save(todo);
 		//Location
 		//Get current resource url
 		//{id}

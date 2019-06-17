@@ -20,7 +20,10 @@ public class Todo {
 	private Date targetedDate;
 	private boolean isDone;
 	
-	
+	Todo()
+	{
+		
+	}
 	
 	
 	public int getId() {
